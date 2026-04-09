@@ -98,12 +98,17 @@
       const buttons = document.querySelectorAll('.btn');
       buttons.forEach(b => b.disabled = true);
 
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 5000); // 5초 timeout
+
       try {
-        const res = await fetch(`${BASE}/${type}/`, { method: 'POST' });
+        const res = await fetch(`${BASE}/${type}/`, { method: 'POST', signal: controller.signal });
         showToast(res.ok ? `✓ [${type}] 호출 성공 (${res.status})` : `✗ 오류: ${res.status}`, !res.ok);
       } catch (e) {
-        showToast(`✗ 네트워크 오류: ${e.message}`, true);
+        const msg = e.name === 'AbortError' ? '✗ 응답 없음 (timeout)' : `✗ 네트워크 오류: ${e.message}`;
+        showToast(msg, true);
       } finally {
+        clearTimeout(timer);
         buttons.forEach(b => b.disabled = false);
       }
     }
