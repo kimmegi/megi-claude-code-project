@@ -26,9 +26,9 @@ node server.js
 
 | 버튼 | 엔드포인트 |
 |---|---|
-| reset | `GET /api/koba/setApiKbsDisasterStreamForKoba/reset/` |
-| 산불 | `GET /api/koba/setApiKbsDisasterStreamForKoba/wildfire/` |
-| 호우 | `GET /api/koba/setApiKbsDisasterStreamForKoba/heavyrain/` |
-| 지진 | `GET /api/koba/setApiKbsDisasterStreamForKoba/eqk/` |
+| reset | `POST /api/koba/setApiKbsDisasterStreamForKoba/reset/` |
+| 산불 | `POST /api/koba/setApiKbsDisasterStreamForKoba/wildfire/` |
+| 호우 | `POST /api/koba/setApiKbsDisasterStreamForKoba/heavyrain/` |
+| 지진 | `POST /api/koba/setApiKbsDisasterStreamForKoba/eqk/` |
 
 **Base URL**: `http://10.0.24.101:9082`
