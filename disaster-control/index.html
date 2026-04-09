@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>재난 스트림 제어</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    h1 {
+      color: #e0e0e0;
+      font-size: 1.8rem;
+      margin-bottom: 48px;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      width: 100%;
+      max-width: 520px;
+      padding: 0 24px;
+    }
+
+    .btn {
+      padding: 40px 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.2s;
+      letter-spacing: 0.08em;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-reset   { background: #4a4a6a; color: #fff; }
+    .btn-wildfire { background: #e74c3c; color: #fff; }
+    .btn-rain    { background: #2980b9; color: #fff; }
+    .btn-quake   { background: #e67e22; color: #fff; }
+
+    #toast {
+      margin-top: 40px;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 1rem;
+      color: #fff;
+      background: #27ae60;
+      opacity: 0;
+      transition: opacity 0.3s;
+      min-width: 240px;
+      text-align: center;
+    }
+
+    #toast.error { background: #c0392b; }
+    #toast.show  { opacity: 1; }
+  </style>
+</head>
+<body>
+  <h1>재난 스트림 제어</h1>
+
+  <div class="btn-grid">
+    <button class="btn btn-reset"    onclick="call('reset')">reset</button>
+    <button class="btn btn-wildfire" onclick="call('wildfire')">산불</button>
+    <button class="btn btn-rain"     onclick="call('heavyrain')">호우</button>
+    <button class="btn btn-quake"    onclick="call('eqk')">지진</button>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const BASE = 'http://10.0.24.101:9082/api/koba/setApiKbsDisasterStreamForKoba';
+
+    async function call(type) {
+      const buttons = document.querySelectorAll('.btn');
+      buttons.forEach(b => b.disabled = true);
+
+      try {
+        const res = await fetch(`${BASE}/${type}/`, { method: 'GET' });
+        showToast(res.ok ? `✓ [${type}] 호출 성공 (${res.status})` : `✗ 오류: ${res.status}`, !res.ok);
+      } catch (e) {
+        showToast(`✗ 네트워크 오류: ${e.message}`, true);
+      } finally {
+        buttons.forEach(b => b.disabled = false);
+      }
+    }
+
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = isError ? 'error show' : 'show';
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.className = isError ? 'error' : '', 3000);
+    }
+  </script>
+</body>
+</html>

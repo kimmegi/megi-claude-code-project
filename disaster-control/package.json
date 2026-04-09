@@ -1,0 +1,9 @@
+{
+  "name": "disaster-control",
+  "version": "1.0.0",
+  "description": "재난 스트림 제어 페이지",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
