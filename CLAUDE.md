@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Claude Code 스킬 실습 프로젝트입니다. 현재 `todo-dashboard` 서브 프로젝트가 포함되어 있습니다.
+Claude Code 스킬 실습 프로젝트입니다. 현재 `todo-dashboard`, `disaster-control` 서브 프로젝트가 포함되어 있습니다.
 
 ## Repository
 
@@ -46,3 +46,29 @@ src/
 
 - 타입 전용 import는 `import type` 사용 (`verbatimModuleSyntax` 활성화)
 - 데이터는 현재 메모리 상태로만 관리 (새로고침 시 초기화)
+
+---
+
+## disaster-control
+
+재난 스트림 API를 트리거하는 태블릿용 제어 페이지입니다.
+
+**스택**: HTML + Node.js (외부 라이브러리 없음)
+
+### 주요 명령어
+
+```bash
+cd disaster-control
+node server.js    # 웹서버 실행 (http://localhost:3000)
+```
+
+### 아키텍처
+
+```
+disaster-control/
+├── index.html   # 버튼 4개 제어 페이지
+└── server.js    # Node.js HTTP 서버 (포트 3000, 0.0.0.0 바인딩)
+```
+
+- Base URL: `http://10.0.24.101:9082/api/koba/setApiKbsDisasterStreamForKoba/`
+- 버튼: reset / wildfire(산불) / heavyrain(호우) / eqk(지진)
