@@ -1,40 +1,57 @@
 # disaster-control
 
-재난 스트림 API를 트리거하는 안드로이드 태블릿용 제어 페이지입니다.
+재난 스트림 API를 트리거하는 태블릿용 제어 페이지입니다.
 
 ## 구조
 
 ```
-태블릿 브라우저 → localhost:3000 (server.js)
+태블릿 브라우저 → Linux서버:3000 (server.js)
                        ↓ 프록시
               10.0.24.101:9082 (개발 API 서버)
 ```
 
 CORS 문제를 프록시 서버로 완전 우회합니다.
 
-## 안드로이드 태블릿 설정
+## Linux 서버 설정
 
-### 1. Termux 설치
-- [F-Droid](https://f-droid.org)에서 Termux 설치 (Google Play 버전 X)
+### 1. 프로젝트 클론
 
-### 2. Node.js 설치
 ```bash
-pkg update && pkg upgrade
-pkg install nodejs
+git clone https://github.com/kimmegi/megi-claude-code-project.git
+cd megi-claude-code-project/disaster-control
 ```
 
-### 3. 파일 복사
-`disaster-control/` 폴더를 태블릿으로 복사 (`index.html`, `server.js`)
+### 2. 서버 실행
 
-### 4. 서버 실행
 ```bash
-cd disaster-control
 node server.js
 ```
 
-### 5. 브라우저에서 열기
+Node.js가 없으면 먼저 설치:
+```bash
+# Ubuntu/Debian
+sudo apt update && sudo apt install nodejs
+
+# CentOS/RHEL
+sudo yum install nodejs
 ```
-http://localhost:3000
+
+### 3. 태블릿에서 접속
+
+태블릿 브라우저에서:
+```
+http://[Linux서버IP]:3000
+```
+
+### 백그라운드 실행 (선택)
+
+```bash
+nohup node server.js &
+```
+
+종료할 때:
+```bash
+pkill -f server.js
 ```
 
 ## API 엔드포인트
